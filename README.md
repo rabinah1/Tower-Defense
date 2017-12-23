@@ -1,9 +1,12 @@
 # Tower-Defense
 
+## General information
+
+This program is a simple Tower defense -game that I did during a course "Basic Course in Programming Y2". This game was an individual project so I have done it alone.
+
 ## Requirements for using the program
 
-The program should work with Python version 3.x. The program is confirmed to work with Python 3.5.
-You will also need a pygame-library. I have used pygame version 1.9.3 but the program could also work with older versions. Remember to check that the pygame-version that you use is compatible with your Python-version.
+This program should work with Python version 3.x. The program is confirmed to work with Python 3.5. You will also need a pygame-library. I have used pygame version 1.9.3 but the program could also work with older versions. Remember to check that the pygame-version that you use is compatible with your Python-version.
 
 ## How to start the program
 
