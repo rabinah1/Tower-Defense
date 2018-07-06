@@ -49,7 +49,8 @@ def menu():
             
             elif event.type == pygame.MOUSEBUTTONDOWN and xpos > 70 and xpos < 500 and ypos > 30 and ypos < 250: # User clicks on the map on the top left corner to start playing the game with that map.
                 field = Map(1) # We initialize an object of the class Map and give it a name "field". The Map-class can be found in file "Map.py". The parameter 1 is used to specify what sort of a map is to be created, for example where is the starting point for the enemies etc.
-                file = "file_1.txt" # This is the file that includes information of all the enemies in this map (field).
+                file = "1" # This is the file that includes information of all the enemies in this map (field).
+                #table = connect("Map1.db")
                 environment_list = pygame.sprite.Group() # Environment_list will include all the environment textures that are shown in the game field.
                 pieces_list = pygame.sprite.Group() # Pieces_list will include all the brown rectangles that form the path that the enemies will be travelling.
                 # Here we add all the parts of the path of the enemies to the pieces_list. Each part is a object of Piece-class that can be found in file "Round.py". The parameters for each part give the x- and y-coordinates of the top left corner of a certain part and lengths of a part in x- and y-directions, respectively.
@@ -78,7 +79,7 @@ def menu():
             # User clicks on the map on the top right corner to start palying the game with that map.
             elif event.type == pygame.MOUSEBUTTONDOWN and xpos > 1000 and xpos < 1430 and ypos > 30 and ypos < 250:
                 field = Map(2)
-                file = "file_2.txt"
+                file = "2"
                 environment_list = pygame.sprite.Group()
                 pieces_list = pygame.sprite.Group()
                 pieces_list.add(Piece(0, 85, 215, 30))
@@ -111,7 +112,7 @@ def menu():
             # User clicks on the map on the lower left corner to start playing the game with that map.
             elif event.type == pygame.MOUSEBUTTONDOWN and xpos > 70 and xpos < 500 and ypos > 300 and ypos < 520:
                 field = Map(3)
-                file = "file_3.txt"
+                file = "3"
                 environment_list = pygame.sprite.Group()
                 pieces_list = pygame.sprite.Group()
                 pieces_list.add(Piece(535, 585, 30, 115))
@@ -144,7 +145,7 @@ def menu():
             # User clicks on the map on the lower right corner to start playing the game with that map.
             elif event.type == pygame.MOUSEBUTTONDOWN and xpos > 1000 and xpos < 1430 and ypos > 300 and ypos < 520:
                 field = Map(4)
-                file = "file_4.txt"
+                file = "4"
                 environment_list = pygame.sprite.Group()
                 pieces_list = pygame.sprite.Group()
                 pieces_list.add(Piece(585, 585, 30, 115))
@@ -184,6 +185,7 @@ def menu():
 
 def main(pieces_list, player, field, environment_list, file, window, param_list, start, Menu_text):
     clock = pygame.time.Clock()
+    database = "Map1.db"
     round_stats = [] # round_stats is a list that contains the information of all enemies of a certain round during that round. In the beginning of every round the list is updated.
     i = -1 # This is a variable used for indexing the round_stats-list.
     delta = 0 # This defines how frequently new enemies are created to the game field. In this game they will be created every 0.5 seconds.
@@ -265,7 +267,7 @@ def main(pieces_list, player, field, environment_list, file, window, param_list,
                         break
                     
             elif event.type == pygame.MOUSEBUTTONDOWN and xpos > 1180 and ypos > 600 and StartRoundFlag == 1: # If the player clicks on the "START ROUND"-button to start a new round.
-                round_stats = read(field, file, jumpLines, player, window) # Here we enter a function read. There we will read the information of the enemies of the current round to the list round_stats.
+                round_stats = read(field, file, jumpLines, player, window, database) # Here we enter a function read. There we will read the information of the enemies of the current round to the list round_stats.
                 if round_stats[0] == "RET": # If the previous round was the last round in the game, the round_stats-list will contain a message "RET" that tells us to return back to the menu-function.
                     param_list[15].empty()
                     param_list[16].empty()

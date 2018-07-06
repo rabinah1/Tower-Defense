@@ -6,6 +6,7 @@ from Bulletsprite import *
 from Enemysprite import *
 from Player import *
 from Map import *
+import sqlite3
 import time
 
 # Define constant names for different colors.
@@ -729,7 +730,7 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
 
 
 # Function read reads information about the enemies of a certain round from a file. There are four files in this game: "file_1.txt", "file_2.txt", "file_3.txt" and "file_4.txt".
-def read(field, file, jumpLines, player, window):
+def read(field, file, jumpLines, player, window, database):
     # In a file, one string separated by two #-marks represents one enemy. One example of this kind of string could be for example 290220r11. This string would be interpreted as follows:
     #  - The firs character, in this case 2, tells how many characters after this one tell the health of an enemy.
     #  - Now the health of the enemy will be 90.
@@ -741,9 +742,10 @@ def read(field, file, jumpLines, player, window):
     #  - In this way the color of each enemy tells the player, to which tower the enemy is immune to. For example, red enemy is immune to red tower.
     
     try:
+        table = sqlite3.connect(database)
+        cursor = table.cursor()
         player.Round += 1 # Add one completed round.
         round_stats = [] # List, that contains the information about enemies.
-        mapfile = open(file, "r") # Open the file that contains information about the enemies.
         health = 0 # Health of the enemy.
         speed = 0 # Speed of the enemy.
         price = 0 # The amount of money acquired for destroying the enemy.
@@ -751,34 +753,37 @@ def read(field, file, jumpLines, player, window):
         resistant = 0 # Immunity of the enemy.
         c = " "
         i = 0
+        
         while (i < jumpLines):
-            mapfile.readline() # In the file, we jump over lines until we reach the line that contains information about next round.
             i += 1
-        while True:
-            if player.Round > 10:
-                win(window) # Call function "win" if the player has passed all 10 rounds.
-                round_stats.append("RET")
-                return round_stats
-            c = mapfile.read(1)
-            c = mapfile.read(int(c))
-            health = int(c)
-            c = mapfile.read(1)
-            c = mapfile.read(int(c))
-            price = int(c)
-            c = mapfile.read(1)
-            color = c
-            c = mapfile.read(1)
-            speed = int(c)
-            c = mapfile.read(1)
-            resistant = int(c)
-            c = mapfile.read(1)
-            enemy = Enemy(health, speed, price, color, resistant, field.get_crit_points()) # Create an object of class Enemy (found in file "Enemysprite.py") and give information read from a file as a parameter for the enemy.
-            enemy.rect.centerx = field.get_startx() # X-coordinate of the enemy = x-coordinate of the beginning of the path of the enemies.
-            enemy.rect.centery = field.get_starty() # Y-coordinate of the enemy = y-coordinate of the beginning of the path of the enemies.
-            round_stats.append(enemy) # Add the created enemy to the round_stats-listLisataan luotu vihollinen round_stats-listaan.
-            if c == "%":
-                mapfile.close()
-                break
+
+        if (file == "1"):
+            cursor.execute("SELECT * FROM field1 WHERE roundNum=" + str(i+1));
+        elif (file == "2"):
+            cursor.execute("SELECT * FROM field2 WHERE roundNum=" + str(i+1));
+        elif (file == "3"):
+            cursor.execute("SELECT * FROM field3 WHERE roundNum=" + str(i+1));
+        elif (file == "4"):
+            cursor.execute("SELECT * FROM field4 WHERE roundNum=" + str(i+1));
+        result = cursor.fetchall()
+        if player.Round > 10:
+            win(window)
+            round_stats.append("RET")
+            return round_stats
+        for r in result:
+            health = r[0]
+            money = r[1]
+            color = r[2]
+            speed = r[3]
+            immunity = r[4]
+            if (speed == "slow"):
+                speed = 1
+            elif (speed == "fast"):
+                speed = 2
+            enemy = Enemy(health, speed, money, color, immunity, field.get_crit_points())
+            enemy.rect.centerx = field.get_startx()
+            enemy.rect.centery = field.get_starty()
+            round_stats.append(enemy)
         return round_stats
     except ValueError:
         print("Reading the file failed!")

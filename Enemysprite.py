@@ -22,15 +22,15 @@ class Enemy(pygame.sprite.Sprite): # Define a class Enemy.
         super().__init__()
         self.color = color
         # Define the picture of an enemy.
-        if (self.color == "B"):
+        if (self.color == "black"):
             self.image = black_monster
-        elif (self.color == "r"):
+        elif (self.color == "red"):
             self.image = red_monster
-        elif (self.color == "b"):
+        elif (self.color == "blue"):
             self.image = blue_monster
-        elif (self.color == "y"):
+        elif (self.color == "yellow"):
             self.image = yellow_monster
-        elif (self.color == "g"):
+        elif (self.color == "gray"):
             self.image = gray_monster
         try:
             self.rect = self.image.get_rect()
@@ -48,9 +48,17 @@ class Enemy(pygame.sprite.Sprite): # Define a class Enemy.
         self.poisonTime = 0 # A counter that controls, how quickly poison affects the enemy.
         self.poison = 0 # A variable that tells whether an enemy is poisoned or not.
         self.price = price # The amount of money the player gets when he destroys this enemy.
-        self.resistant = resistant # To which type of tower the enemy is immune.
         self.dist = 0 # The distnace of an enemy from a smart bomb.
-        
+        if (resistant == "none"):
+            self.resistant = 5
+        elif (resistant == "red"):
+            self.resistant = 1
+        elif (resistant == "blue"):
+            self.resistant = 2
+        elif (resistant == "yellow"):
+            self.resistant = 3
+        elif (resistant == "gray"):
+            self.resistant = 4
         
     def get_location(self): # Returns the coordinates of an enemy.
         x = self.rect.centerx
@@ -144,5 +152,5 @@ class Enemy(pygame.sprite.Sprite): # Define a class Enemy.
             elif self.decideDirection == 1:
                 self.rect.centery += self.speed
                 self.direction = "down"
-                
+
         self.value += self.speed
