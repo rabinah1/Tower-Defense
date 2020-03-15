@@ -28,7 +28,7 @@ def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, play
         # Draw a blue circle around the tower that is to be set on the field.
         pygame.draw.circle(window, col, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]), gun.range, 1)
         col = BLUE
-        if factor != 5: # If the player tries set some other weapon that a mine to the path of the enemies we draw a red circle around the weapon.
+        if factor != 5: # If the player tries to set some other weapon that a mine to the path of the enemies we draw a red circle around the weapon.
             for piece in pieces_list:
                 if pygame.sprite.collide_rect(gun, piece):
                     col = RED
@@ -47,7 +47,7 @@ def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, play
                 col = RED
         if gun.rect.centerx >= 1178 or (gun.rect.centerx <= 60 and gun.rect.centery <= 60):
             col = RED
-    
+
         # Draw a picture of the tower to be set on top of the cursor.
         if factor == 1:
             window.blit(param_list[24], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
@@ -63,42 +63,42 @@ def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, play
             window.blit(param_list[57], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         elif factor == 7:
             window.blit(param_list[62], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
-        n = 0 # N is a variable that controls when we exit this function.
-        for event in pygame.event.get(): # Loop through different events.
-            if event.type == pygame.MOUSEBUTTONUP: # The player releases the left mousebutton.
-                gun.rect.centerx = pygame.mouse.get_pos()[0] # X-coordinate of the tower = X-coordinate of the cursor.
-                gun.rect.centery = pygame.mouse.get_pos()[1] # Y-coordinate of the tower = Y-coordinate of the cursor.
-                # If the player does not have enough money to buy the tower or the player tries to set the tower outside the gamefield, we remove the tower and return None in place of the tower.
+        n = 0
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONUP:
+                gun.rect.centerx = pygame.mouse.get_pos()[0]
+                gun.rect.centery = pygame.mouse.get_pos()[1]
+
                 if gun.price > player.Money or gun.rect.centerx >= 1178 or (gun.rect.centerx <= 60 and gun.rect.centery <= 60):
                     gun.kill()
                     a = 0
                     return (None, round_stats, Delta, i)
-                for piece in pieces_list: # If the player tries to set the tower on top of the path of the enemies, the tower is removed and none is returned.
+                for piece in pieces_list: # If the player tries to set the tower on top of the path of the enemies.
                     if pygame.sprite.collide_rect(gun, piece):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
                 for r in param_list[15]:
-                    if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of another tower, the tower is removed and none is returned.
+                    if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of another tower.
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
                 for r in param_list[51]:
-                    if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of a mine, the tower is removed and none is returned.
+                    if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of a mine.
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
                 for r in param_list[60]:
-                    if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of a smart bomb, the tower is removed and none is returned.
+                    if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of a smart bomb.
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in environment_list: # If the player tries to set the tower on top of an environment texture, the tower is removed and none is returned.
+                for r in environment_list: # If the player tries to set the tower on top of an environment texture.
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                player.Money -= gun.price # If the player succesfully set the tower, we reduce players money by the price of the tower.
+                player.Money -= gun.price # If the player succesfully set the tower, reduce players money by the price of the tower.
                 n = 1
         if n == 1:
             break
@@ -203,7 +203,6 @@ def Set_assistant(param_list, window, pieces_list, round_stats, Delta, i, player
         if n != 0:
             break
     return (gun, round_stats, Delta, i)
-
 
 
 def Set_pistol(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
@@ -335,6 +334,7 @@ def Set_smart_bomb(param_list, window, pieces_list, round_stats, Delta, i, playe
             break
     return (gun, round_stats, Delta, i)
 
+
 def Set_homing_missile(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 7
     a = time.monotonic()
@@ -384,7 +384,6 @@ def Set_homing_missile(param_list, window, pieces_list, round_stats, Delta, i, p
     return (gun, round_stats, Delta, i)
 
 
-
 # This function initializes some objects needed in the program. These include for example fonts, textures, texts, lists and pictures. The comments include some examples of what different code lines do.
 def Initialize():
     font = pygame.font.SysFont('Calibri', 14, True, False) # Initialize size 14 font Calibri.
@@ -430,12 +429,12 @@ def Initialize():
     homing_missile = pygame.image.load("homing_missile.jpg")
     homing_missile_small = pygame.image.load("homing_missile_small.jpg")
     shotgun = pygame.image.load("shotgun.jpg") # Load a picture needed by the program.
-    machine_gun = pygame.image.load("machine gun.jpg")
+    machine_gun = pygame.image.load("machine_gun.jpg")
     assistant = pygame.image.load("assistant.jpg")
     pistol = pygame.image.load("pistol.jpg")
     pause = pygame.image.load("pause_button.jpg")
     shotgun_small = pygame.image.load("shotgun_small.jpg")
-    machine_gun_small = pygame.image.load("machine gun_small.jpg")
+    machine_gun_small = pygame.image.load("machine_gun_small.jpg")
     pistol_small = pygame.image.load("pistol_small.jpg")
     assistant_small = pygame.image.load("assistant_small.jpg")
     poison_text = Update_font.render ("Add poison", True, BLACK)
@@ -540,6 +539,7 @@ def Draw_static(window, param_list, pieces_list, player, environment_list):
     window.blit((param_list[45].render(str(player.Round), True, BLACK)), (1217, 270))
     window.blit(param_list[45].render("/", True, BLACK), (1237, 270))
     window.blit(param_list[45].render("10", True, BLACK), (1245, 270))
+
 
 # Function Draw is the game loop that does mostly the same things than the function main() in the "Main.py"-file. This function is used when the has bought a tower and is setting it in the game field. This function differs from the main()-function by taking into account that the left mousebutton is now pressed continuously and thus the player can not click on different objects. Furthermore, a blue circle is drawn around the tower (mouse cursor). A more detailed description of this function can be found by reading the corresponding code lines in the main()-function.
 def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list):
@@ -728,7 +728,6 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
     return (round_stats, Delta, i)
 
 
-
 # Function read reads information about the enemies of a certain round from a file. There are four files in this game: "file_1.txt", "file_2.txt", "file_3.txt" and "file_4.txt".
 def read(field, file, jumpLines, player, window, database):
     # In a file, one string separated by two #-marks represents one enemy. One example of this kind of string could be for example 290220r11. This string would be interpreted as follows:
@@ -790,6 +789,7 @@ def read(field, file, jumpLines, player, window, database):
         round_stats = []
         round_stats.append("RET")
         return round_stats
+
 
 # Function Draw_2 is the game loop that does mostly the same things as the main()-function in the "Main.py"-file. We use this function when the player has clicked on some tower on the field to some operations on it.
 def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, player, start, field, jumpLines, environment_list):
