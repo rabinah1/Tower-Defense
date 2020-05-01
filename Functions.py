@@ -16,15 +16,15 @@ WHITE = (255,255,255)
 RED = (255,0,0)
 BLUE = (0,0,255)
 
-def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
+def Set_machine_gun(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 1
     a = time.monotonic()
-    gun = Machine_gun_tower(param_list[23], a)
+    gun = Machine_gun_tower(param_dict["machine_gun_small"], a)
     col = BLUE
     while True: # Start a loop that ends when the users releases left mousebutton.
         gun.rect.centerx = pygame.mouse.get_pos()[0]
         gun.rect.centery = pygame.mouse.get_pos()[1]
-        (round_stats, Delta, i) = Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
+        (round_stats, Delta, i) = Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
         # Draw a blue circle around the tower that is to be set on the field.
         pygame.draw.circle(window, col, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]), gun.range, 1)
         col = BLUE
@@ -33,13 +33,13 @@ def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, play
                 if pygame.sprite.collide_rect(gun, piece):
                     col = RED
         # If the player tries to set a tower to a "forbidden" spot, we draw a red circle around the tower.
-        for r in param_list[15]:
+        for r in param_dict["tower_list"]:
             if pygame.sprite.collide_rect(r, gun):
                 col = RED
-        for r in param_list[50]:
+        for r in param_dict["contact_bomb_list"]:
             if pygame.sprite.collide_rect(r, gun):
                 col = RED
-        for r in param_list[59]:
+        for r in param_dict["range_bomb_list"]:
             if pygame.sprite.collide_rect(r, gun):
                 col = RED
         for r in environment_list:
@@ -50,19 +50,19 @@ def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, play
 
         # Draw a picture of the tower to be set on top of the cursor.
         if factor == 1:
-            window.blit(param_list[23], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+            window.blit(param_dict["machine_gun_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         elif factor == 2:
-            window.blit(param_list[22], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+            window.blit(param_dict["shotgun_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         elif factor == 3:
-            window.blit(param_list[25], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+            window.blit(param_dict["assistant_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         elif factor == 4:
-            window.blit(param_list[24], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+            window.blit(param_dict["pistol_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         elif factor == 5:
-            window.blit(param_list[47], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+            window.blit(param_dict["mine_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         elif factor == 6:
-            window.blit(param_list[56], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+            window.blit(param_dict["smart_bomb_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         elif factor == 7:
-            window.blit(param_list[61], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+            window.blit(param_dict["homing_missile_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         n = 0
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
@@ -78,17 +78,17 @@ def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, play
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[15]:
+                for r in param_dict["tower_list"]:
                     if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of another tower.
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[50]:
+                for r in param_dict["contact_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of a mine.
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[59]:
+                for r in param_dict["range_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun): # If the player tries to set the tower on top of a smart bomb.
                         gun.kill()
                         a = 0
@@ -105,14 +105,14 @@ def Set_machine_gun(param_list, window, pieces_list, round_stats, Delta, i, play
     return (gun, round_stats, Delta, i)
 
 
-def Set_shotgun(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
+def Set_shotgun(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 2
     a = time.monotonic()
-    gun = Shotgun_tower(param_list[22], a)
+    gun = Shotgun_tower(param_dict["shotgun_small"], a)
     while True:
         gun.rect.centerx = pygame.mouse.get_pos()[0]
         gun.rect.centery = pygame.mouse.get_pos()[1]
-        (round_stats, Delta, i) = Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
+        (round_stats, Delta, i) = Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
         n = 0
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
@@ -127,17 +127,17 @@ def Set_shotgun(param_list, window, pieces_list, round_stats, Delta, i, player, 
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[15]:
+                for r in param_dict["tower_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[50]:
+                for r in param_dict["contact_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[59]:
+                for r in param_dict["range_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
@@ -156,14 +156,14 @@ def Set_shotgun(param_list, window, pieces_list, round_stats, Delta, i, player, 
 
 
 
-def Set_assistant(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
+def Set_assistant(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 3
     a = time.monotonic()
-    gun = Assistant_tower(param_list[25], a)
+    gun = Assistant_tower(param_dict["assistant_small"], a)
     while True:
         gun.rect.centerx = pygame.mouse.get_pos()[0]
         gun.rect.centery = pygame.mouse.get_pos()[1]
-        (round_stats, Delta, i) = Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
+        (round_stats, Delta, i) = Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
         n = 0
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
@@ -178,17 +178,17 @@ def Set_assistant(param_list, window, pieces_list, round_stats, Delta, i, player
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[15]:
+                for r in param_dict["tower_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[50]:
+                for r in param_dict["contact_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[59]:
+                for r in param_dict["range_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
@@ -205,14 +205,14 @@ def Set_assistant(param_list, window, pieces_list, round_stats, Delta, i, player
     return (gun, round_stats, Delta, i)
 
 
-def Set_pistol(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
+def Set_pistol(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 4
     a = time.monotonic()
-    gun = Pistol_tower(param_list[24], a)
+    gun = Pistol_tower(param_dict["pistol_small"], a)
     while True:
         gun.rect.centerx = pygame.mouse.get_pos()[0]
         gun.rect.centery = pygame.mouse.get_pos()[1]
-        (round_stats, Delta, i) = Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
+        (round_stats, Delta, i) = Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
         n = 0
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
@@ -227,17 +227,17 @@ def Set_pistol(param_list, window, pieces_list, round_stats, Delta, i, player, s
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[15]:
+                for r in param_dict["tower_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[50]:
+                for r in param_dict["contact_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[59]:
+                for r in param_dict["range_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
@@ -254,13 +254,13 @@ def Set_pistol(param_list, window, pieces_list, round_stats, Delta, i, player, s
     return (gun, round_stats, Delta, i)
                         
 
-def Set_mine(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
+def Set_mine(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 5
-    gun = Mine(param_list[47])
+    gun = Mine(param_dict["mine_small"])
     while True:
         gun.rect.centerx = pygame.mouse.get_pos()[0]
         gun.rect.centery = pygame.mouse.get_pos()[1]
-        (round_stats, Delta, i) = Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
+        (round_stats, Delta, i) = Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
         n = 0
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
@@ -269,15 +269,15 @@ def Set_mine(param_list, window, pieces_list, round_stats, Delta, i, player, sta
                 if gun.price > player.Money or gun.rect.centerx >= 1178 or (gun.rect.centerx <= 60 and gun.rect.centery <= 60):
                     gun.kill()
                     return (None, round_stats, Delta, i)
-                for r in param_list[15]:
+                for r in param_dict["tower_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         return (None, round_stats, Delta, i)
-                for r in param_list[50]:
+                for r in param_dict["contact_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         return (None, round_stats, Delta, i)
-                for r in param_list[59]:
+                for r in param_dict["range_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         return (None, round_stats, Delta, i)
@@ -292,13 +292,13 @@ def Set_mine(param_list, window, pieces_list, round_stats, Delta, i, player, sta
             break
     return (gun, round_stats, Delta, i)
 
-def Set_smart_bomb(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
+def Set_smart_bomb(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 6
-    gun = Smart_bomb(param_list[56])
+    gun = Smart_bomb(param_dict["smart_bomb_small"])
     while True:
         gun.rect.centerx = pygame.mouse.get_pos()[0]
         gun.rect.centery = pygame.mouse.get_pos()[1]
-        (round_stats, Delta, i) = Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
+        (round_stats, Delta, i) = Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
         n = 0
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
@@ -311,15 +311,15 @@ def Set_smart_bomb(param_list, window, pieces_list, round_stats, Delta, i, playe
                     if pygame.sprite.collide_rect(piece, gun):
                         gun.kill()
                         return (None, round_stats, Delta, i)
-                for r in param_list[15]:
+                for r in param_dict["tower_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         return (None, round_stats, Delta, i)
-                for r in param_list[50]:
+                for r in param_dict["contact_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         return (None, round_stats, Delta, i)
-                for r in param_list[59]:
+                for r in param_dict["range_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         return (None, round_stats, Delta, i)
@@ -335,14 +335,14 @@ def Set_smart_bomb(param_list, window, pieces_list, round_stats, Delta, i, playe
     return (gun, round_stats, Delta, i)
 
 
-def Set_homing_missile(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
+def Set_homing_missile(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, environment_list):
     factor = 7
     a = time.monotonic()
-    gun = Homing_missile_tower(param_list[61], a)
+    gun = Homing_missile_tower(param_dict["homing_missile_small"], a)
     while True:
         gun.rect.centerx = pygame.mouse.get_pos()[0]
         gun.rect.centery = pygame.mouse.get_pos()[1]
-        (round_stats, Delta, i) = Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
+        (round_stats, Delta, i) = Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list)
         n = 0
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONUP:
@@ -357,17 +357,17 @@ def Set_homing_missile(param_list, window, pieces_list, round_stats, Delta, i, p
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[15]:
+                for r in param_dict["tower_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[50]:
+                for r in param_dict["contact_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
                         return (None, round_stats, Delta, i)
-                for r in param_list[59]:
+                for r in param_dict["range_bomb_list"]:
                     if pygame.sprite.collide_rect(r, gun):
                         gun.kill()
                         a = 0
@@ -452,18 +452,27 @@ def Initialize():
     range_list = []
     value_list = []
     dictionary = {}
-    param_list = [machine_gun_text, shotgun_text, assistant_text, pistol_text, machine_gun_price, shotgun_price, assistant_price, pistol_price,
-            Start_text, update_range_text, update_range_price, update_rate_text, update_rate_price, update_damage_text, update_damage_price,
-            tower_list, bullet_list, enemy_list, shotgun, machine_gun, assistant, pistol, shotgun_small, machine_gun_small, pistol_small,
-            assistant_small, money_text, round_text, lives_text, range_list, value_list, dictionary, Info_text, exit_text, info_font, welcome_font,
-            welcome_1, welcome_2, map_1, map_2, map_3, map_4, poison_text, poison_price, Update_font, instructions_text, mine, mine_small, mine_text,
-            mine_price, contact_bomb_list, font, tree, lake, tree_2, smart_bomb, smart_bomb_small, smart_bomb_text, smart_bomb_price, range_bomb_list,
-            homing_missile, homing_missile_small, homing_missile_text, homing_missile_price, missile_list]
-    return param_list
+    param_dict = {"machine_gun_text": machine_gun_text, "shotgun_text": shotgun_text, "assistant_text": assistant_text, "pistol_text": pistol_text,
+                  "machine_gun_price": machine_gun_price, "shotgun_price": shotgun_price, "assistant_price": assistant_price,
+                  "pistol_price": pistol_price, "Start_text": Start_text, "update_range_text": update_range_text,
+                  "update_range_price": update_range_price, "update_rate_text": update_rate_text, "update_rate_price": update_rate_price,
+                  "update_damage_text": update_damage_text, "update_damage_price": update_damage_price, "tower_list": tower_list,
+                  "bullet_list": bullet_list, "enemy_list": enemy_list, "shotgun": shotgun, "machine_gun": machine_gun, "assistant": assistant,
+                  "pistol": pistol, "shotgun_small": shotgun_small, "machine_gun_small": machine_gun_small, "pistol_small": pistol_small,
+                  "assistant_small": assistant_small, "money_text": money_text, "round_text": round_text, "lives_text": lives_text,
+                  "range_list": range_list, "value_list": value_list, "dictionary": dictionary, "Info_text": Info_text, "exit_text": exit_text,
+                  "info_font": info_font, "welcome_font": welcome_font, "welcome_1": welcome_1, "welcome_2": welcome_2, "map_1": map_1,
+                  "map_2": map_2, "map_3": map_3, "map_4": map_4, "poison_text": poison_text, "poison_price": poison_price, "Update_font": Update_font,
+                  "instructions_text": instructions_text, "mine": mine, "mine_small": mine_small, "mine_text": mine_text, "mine_price": mine_price,
+                  "contact_bomb_list": contact_bomb_list, "font": font, "tree": tree, "lake": lake, "tree_2": tree_2, "smart_bomb": smart_bomb,
+                  "smart_bomb_small": smart_bomb_small, "smart_bomb_text": smart_bomb_text, "smart_bomb_price": smart_bomb_price,
+                  "range_bomb_list": range_bomb_list, "homing_missile": homing_missile, "homing_missile_small": homing_missile_small,
+                  "homing_missile_text": homing_missile_text, "homing_missile_price": homing_missile_price, "missile_list": missile_list}
+    return param_dict
  
  
 # This function draws the static objects needed by the menu screen.
-def Draw_static_1(window, param_list):
+def Draw_static_1(window, param_dict):
     window.fill(WHITE)
     pygame.draw.line(window, BLACK, (780, 600), (900, 600), 2) # Pygame.draw.line-command can be used to draw lines.
     pygame.draw.line(window, BLACK, (780, 600), (780, 670), 2)
@@ -474,19 +483,19 @@ def Draw_static_1(window, param_list):
     pygame.draw.line(window, BLACK, (695, 595), (695, 670), 2)
     pygame.draw.line(window, BLACK, (380, 670), (695, 670), 2)
     # The following commands draw pictures of the four maps and some other textures on the screen.
-    window.blit(param_list[45], (400, 615))
-    window.blit(param_list[32], (2, 550))
-    window.blit(param_list[33], (800, 615))
-    window.blit(param_list[36], (550, 150))
-    window.blit(param_list[37], (520, 300))
-    window.blit(param_list[38], (70, 30))
-    window.blit(param_list[39], (1000, 30))
-    window.blit(param_list[40], (70, 300))
-    window.blit(param_list[41], (1000,300))
+    window.blit(param_dict["instructions_text"], (400, 615))
+    window.blit(param_dict["Info_text"], (2, 550))
+    window.blit(param_dict["exit_text"], (800, 615))
+    window.blit(param_dict["welcome_1"], (550, 150))
+    window.blit(param_dict["welcome_2"], (520, 300))
+    window.blit(param_dict["map_1"], (70, 30))
+    window.blit(param_dict["map_2"], (1000, 30))
+    window.blit(param_dict["map_3"], (70, 300))
+    window.blit(param_dict["map_4"], (1000,300))
     return
 
 # Draw the static objects needed in the game screen.
-def Draw_static(window, param_list, pieces_list, player, environment_list):
+def Draw_static(window, param_dict, pieces_list, player, environment_list):
     pygame.draw.rect(window, GREEN, (0,0,1177,700), 0) # Fill the whole game field with green.
     pieces_list.draw(window) # Draw the path of the enemies.
     environment_list.draw(window) # Draw environment textures.
@@ -499,58 +508,58 @@ def Draw_static(window, param_list, pieces_list, player, environment_list):
     pygame.draw.line(window, BLACK, (1180, 310), (1500, 310), 3)
     pygame.draw.line(window, BLACK, (1180, 220), (1500, 220), 3)
     # Draw different lines, pictures and textures on the screen.
-    window.blit(param_list[19], (1420, 0))
-    window.blit(param_list[0], (1422, 80))
-    window.blit(param_list[4], (1445, 95))
-    window.blit(param_list[18], (1340, 0))
-    window.blit(param_list[1], (1350, 80))
-    window.blit(param_list[5], (1362, 95))
-    window.blit(param_list[20], (1260, 0))
-    window.blit(param_list[2], (1275, 80))
-    window.blit(param_list[6], (1288, 95))
-    window.blit(param_list[21], (1180, 0))
-    window.blit(param_list[3], (1200, 80))
-    window.blit(param_list[7], (1203, 95))
-    window.blit(param_list[8], (1230, 630))
-    window.blit(param_list[9], (1185, 370))
-    window.blit(param_list[10], (1240, 390))
-    window.blit(param_list[11], (1350, 370))
-    window.blit(param_list[12], (1400, 390))
-    window.blit(param_list[13], (1190, 500))
-    window.blit(param_list[14], (1240, 520))
-    window.blit(param_list[27], (1210, 240))
-    window.blit(param_list[26], (1310, 240))
-    window.blit(param_list[28], (1410, 240))
-    window.blit(param_list[42], (1370, 500))
-    window.blit(param_list[43], (1395, 520))
-    window.blit(param_list[46], (1180, 112))
-    window.blit(param_list[48], (1205, 192))
-    window.blit(param_list[49], (1205, 205))
-    window.blit(param_list[55], (1260, 112))
-    window.blit(param_list[60], (1340, 112))
-    window.blit(param_list[62], (1340, 192))
-    window.blit(param_list[63], (1368, 205))
-    window.blit(param_list[57], (1267, 192))
-    window.blit(param_list[58], (1286, 205))
-    window.blit((param_list[44].render(str(player.Money), True, BLACK)), (1320, 270))
-    window.blit((param_list[44].render(str(player.Lives), True, BLACK)), (1420, 270))
-    window.blit((param_list[44].render(str(player.Round), True, BLACK)), (1217, 270))
-    window.blit(param_list[44].render("/", True, BLACK), (1237, 270))
-    window.blit(param_list[44].render("10", True, BLACK), (1245, 270))
+    window.blit(param_dict["machine_gun"], (1420, 0))
+    window.blit(param_dict["machine_gun_text"], (1422, 80))
+    window.blit(param_dict["machine_gun_price"], (1445, 95))
+    window.blit(param_dict["shotgun"], (1340, 0))
+    window.blit(param_dict["shotgun_text"], (1350, 80))
+    window.blit(param_dict["shotgun_price"], (1362, 95))
+    window.blit(param_dict["assistant"], (1260, 0))
+    window.blit(param_dict["assistant_text"], (1275, 80))
+    window.blit(param_dict["assistant_price"], (1288, 95))
+    window.blit(param_dict["pistol"], (1180, 0))
+    window.blit(param_dict["pistol_text"], (1200, 80))
+    window.blit(param_dict["pistol_price"], (1203, 95))
+    window.blit(param_dict["Start_text"], (1230, 630))
+    window.blit(param_dict["update_range_text"], (1185, 370))
+    window.blit(param_dict["update_range_price"], (1240, 390))
+    window.blit(param_dict["update_rate_text"], (1350, 370))
+    window.blit(param_dict["update_rate_price"], (1400, 390))
+    window.blit(param_dict["update_damage_text"], (1190, 500))
+    window.blit(param_dict["update_damage_price"], (1240, 520))
+    window.blit(param_dict["round_text"], (1210, 240))
+    window.blit(param_dict["money_text"], (1310, 240))
+    window.blit(param_dict["lives_text"], (1410, 240))
+    window.blit(param_dict["poison_text"], (1370, 500))
+    window.blit(param_dict["poison_price"], (1395, 520))
+    window.blit(param_dict["mine"], (1180, 112))
+    window.blit(param_dict["mine_text"], (1205, 192))
+    window.blit(param_dict["mine_price"], (1205, 205))
+    window.blit(param_dict["smart_bomb"], (1260, 112))
+    window.blit(param_dict["homing_missile"], (1340, 112))
+    window.blit(param_dict["homing_missile_text"], (1340, 192))
+    window.blit(param_dict["homing_missile_price"], (1368, 205))
+    window.blit(param_dict["smart_bomb_text"], (1267, 192))
+    window.blit(param_dict["smart_bomb_price"], (1286, 205))
+    window.blit((param_dict["Update_font"].render(str(player.Money), True, BLACK)), (1320, 270))
+    window.blit((param_dict["Update_font"].render(str(player.Lives), True, BLACK)), (1420, 270))
+    window.blit((param_dict["Update_font"].render(str(player.Round), True, BLACK)), (1217, 270))
+    window.blit(param_dict["Update_font"].render("/", True, BLACK), (1237, 270))
+    window.blit(param_dict["Update_font"].render("10", True, BLACK), (1245, 270))
 
 
 # Function Draw is the game loop that does mostly the same things than the function main() in the "Main.py"-file. This function is used when the has bought a tower and is setting it in the game field. This function differs from the main()-function by taking into account that the left mousebutton is now pressed continuously and thus the player can not click on different objects. Furthermore, a blue circle is drawn around the tower (mouse cursor). A more detailed description of this function can be found by reading the corresponding code lines in the main()-function.
-def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list):
+def Draw(param_dict, window, pieces_list, round_stats, Delta, i, player, start, field, jumpLines, gun, factor, environment_list):
     clock = pygame.time.Clock()
     if float(time.monotonic()) - Delta > 0.5 and i < len(round_stats) and i != -1: # This is adding new enemies to the game field if it is necessary.
-        param_list[17].add(round_stats[i])
+        param_dict["enemy_list"].add(round_stats[i])
         Delta = float(time.monotonic())
         if (len(round_stats) - i == 1):
             del round_stats[:]
             i = -1
         else:
             i = i + 1
-    Draw_static(window, param_list, pieces_list, player, environment_list)
+    Draw_static(window, param_dict, pieces_list, player, environment_list)
     
     # Draw a blue circle around the tower.
     pygame.draw.circle(window, BLUE, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]), gun.range, 1)
@@ -560,13 +569,13 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
             if pygame.sprite.collide_rect(gun, piece):
                 pygame.draw.circle(window, RED, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]), gun.range, 1)
     # If the player tries to set the tower on a "forbidden" spot, draw a red circle around the tower.
-    for r in param_list[15]:
+    for r in param_dict["tower_list"]:
         if pygame.sprite.collide_rect(r, gun):
             pygame.draw.circle(window, RED, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]), gun.range, 1)
-    for r in param_list[50]:
+    for r in param_dict["contact_bomb_list"]:
         if pygame.sprite.collide_rect(r, gun):
             pygame.draw.circle(window, RED, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]), gun.range, 1)
-    for r in param_list[59]:
+    for r in param_dict["range_bomb_list"]:
         if pygame.sprite.collide_rect(r, gun):
             pygame.draw.circle(window, RED, (pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1]), gun.range, 1)
     for r in environment_list:
@@ -577,29 +586,29 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
     
     # Draw the image of the tower being set on top of the cursor.
     if factor == 1:
-        window.blit(param_list[23], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+        window.blit(param_dict["machine_gun_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
     elif factor == 2:
-        window.blit(param_list[22], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+        window.blit(param_dict["shotgun_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
     elif factor == 3:
-        window.blit(param_list[25], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+        window.blit(param_dict["assistant_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
     elif factor == 4:
-        window.blit(param_list[24], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+        window.blit(param_dict["pistol_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
     elif factor == 5:
-        window.blit(param_list[47], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+        window.blit(param_dict["mine_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
     elif factor == 6:
-        window.blit(param_list[56], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+        window.blit(param_dict["smart_bomb_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
     elif factor == 7:
-        window.blit(param_list[61], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
+        window.blit(param_dict["homing_missile_small"], (pygame.mouse.get_pos()[0]-10, pygame.mouse.get_pos()[1]-10))
         
-    param_list[15].draw(window)
-    param_list[50].draw(window)
-    param_list[59].draw(window)
+    param_dict["tower_list"].draw(window)
+    param_dict["contact_bomb_list"].draw(window)
+    param_dict["range_bomb_list"].draw(window)
     
-    for enemy in param_list[17]:
+    for enemy in param_dict["enemy_list"]:
         if enemy.direction == "up" or enemy.direction == "down":
-            window.blit((param_list[51].render(str(enemy.health), True, BLACK)), (enemy.rect.centerx + 16, enemy.rect.centery - 7))
+            window.blit((param_dict["font"].render(str(enemy.health), True, BLACK)), (enemy.rect.centerx + 16, enemy.rect.centery - 7))
         elif enemy.direction == "left" or enemy.direction == "right":
-            window.blit((param_list[51].render(str(enemy.health), True, BLACK)), (enemy.rect.x, enemy.rect.centery - 28))
+            window.blit((param_dict["font"].render(str(enemy.health), True, BLACK)), (enemy.rect.x, enemy.rect.centery - 28))
         if enemy.health <= 0:
             enemy.kill()
             player.Money += enemy.price
@@ -609,8 +618,8 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
             if player.Lives <= 0:
                 game_over(window)
                 
-    for tower in param_list[50]:
-        for enemy in param_list[17]:
+    for tower in param_dict["contact_bomb_list"]:
+        for enemy in param_dict["enemy_list"]:
             if enemy.health <= 0:
                 enemy.kill()
                 player.Money += enemy.price
@@ -618,8 +627,8 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
                 enemy.health -= tower.damage
                 tower.kill()
                 
-    for tower in param_list[59]:
-        for enemy in param_list[17]:
+    for tower in param_dict["range_bomb_list"]:
+        for enemy in param_dict["enemy_list"]:
             enemy.dist = sqrt((enemy.rect.centerx - tower.rect.centerx)**2 + (enemy.rect.centery - tower.rect.centery)**2)
             if enemy.health <= 0:
                 enemy.kill()
@@ -640,26 +649,26 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
         if tower.number == 0:
             del tower.elist[:]
     
-    for bullet in param_list[64]:
+    for bullet in param_dict["missile_list"]:
         bullet.target = [bullet.target_enemy.rect.centerx, bullet.target_enemy.rect.centery]
         
     
-    for tower in param_list[15]:
+    for tower in param_dict["tower_list"]:
         if tower.PipeUp == 0:
             tower.x0 = tower.rect.centerx
             tower.y0 = tower.rect.centery - 12
             tower.PipeUp= 1
         pygame.draw.line(window, BLACK, (tower.rect.centerx, tower.rect.centery), (tower.x0, tower.y0), 1)
-        for enemy in param_list[17]:
+        for enemy in param_dict["enemy_list"]:
             if (enemy.health <= 0):
                 enemy.kill()
                 player.Money += enemy.price
             enemy.dist = sqrt((enemy.rect.centerx - tower.rect.centerx)**2 + (enemy.rect.centery - tower.rect.centery)**2)
             if enemy.dist <= tower.range:
-                param_list[29].append(enemy)
-                param_list[31][enemy.value] = enemy
-                param_list[30].append(enemy.value)
-            for bullet in param_list[16]:
+                param_dict["range_list"].append(enemy)
+                param_dict["dictionary"][enemy.value] = enemy
+                param_dict["value_list"].append(enemy.value)
+            for bullet in param_dict["bullet_list"]:
                 if pygame.sprite.collide_rect(bullet, enemy):
                     if bullet.type_2 != enemy.resistant:
                         enemy.health -= bullet.damage
@@ -673,7 +682,7 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
                                 enemy.resistant = 5
                             enemy.image = black_monster
                     bullet.kill()
-            for bullet in param_list[64]:
+            for bullet in param_dict["missile_list"]:
                 if pygame.sprite.collide_rect(bullet, enemy):
                     if bullet.type_2 != enemy.resistant:
                         enemy.health -= bullet.damage
@@ -682,27 +691,27 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
                             enemy.poisonTime = time.monotonic()
                     bullet.kill()
                     
-        param_list[30].sort()
-        param_list[30].reverse()
-        if float(time.monotonic()) - float(tower.beginning) >= tower.interval and (param_list[30]):
-            target = [param_list[31][param_list[30][0]].rect.centerx, param_list[31][param_list[30][0]].rect.centery]
+        param_dict["value_list"].sort()
+        param_dict["value_list"].reverse()
+        if float(time.monotonic()) - float(tower.beginning) >= tower.interval and (param_dict["value_list"]):
+            target = [param_dict["dictionary"][param_dict["value_list"][0]].rect.centerx, param_dict["dictionary"][param_dict["value_list"][0]].rect.centery]
             startpoint = [tower.rect.centerx, tower.rect.centery]
-            tower.x0 = startpoint[0] + 12*(target[0]-startpoint[0]) / param_list[31][param_list[30][0]].dist
-            tower.y0 = startpoint[1] + 12*(target[1]-startpoint[1]) / param_list[31][param_list[30][0]].dist
+            tower.x0 = startpoint[0] + 12*(target[0]-startpoint[0]) / param_dict["dictionary"][param_dict["value_list"][0]].dist
+            tower.y0 = startpoint[1] + 12*(target[1]-startpoint[1]) / param_dict["dictionary"][param_dict["value_list"][0]].dist
             pygame.draw.line(window, BLACK, (startpoint[0], startpoint[1]), (round(tower.x0), round(tower.y0)), 1)
             damage = tower.damage
             poison = tower.poison
             Type = tower.type
             Type_2 = tower.type_2
-            bullet = Bullet(target, startpoint, damage, poison, Type, Type_2, param_list[31][param_list[30][0]])
+            bullet = Bullet(target, startpoint, damage, poison, Type, Type_2, param_dict["dictionary"][param_dict["value_list"][0]])
             if tower.homing == 0:
-                param_list[16].add(bullet)
+                param_dict["bullet_list"].add(bullet)
             elif tower.homing == 1:
-                param_list[64].add(bullet)
+                param_dict["missile_list"].add(bullet)
             tower.beginning = time.monotonic()
-        del param_list[30][:]
-        del param_list[29][:]
-        param_list[31].clear()
+        del param_dict["value_list"][:]
+        del param_dict["range_list"][:]
+        param_dict["dictionary"].clear()
             
     if jumpLines == 0 and field.number == 1:
         window.blit(start, (5, 315))
@@ -712,15 +721,15 @@ def Draw(param_list, window, pieces_list, round_stats, Delta, i, player, start, 
         window.blit(start, (570, 670))
     elif jumpLines == 0 and field.number == 4:
         window.blit(start, (620, 670))
-    param_list[16].update()
-    param_list[17].update()
-    param_list[64].update()
-    param_list[16].draw(window)
-    param_list[17].draw(window)
-    param_list[64].draw(window)
-    del param_list[30][:]
-    del param_list[29][:]
-    param_list[31].clear()
+    param_dict["bullet_list"].update()
+    param_dict["enemy_list"].update()
+    param_dict["missile_list"].update()
+    param_dict["bullet_list"].draw(window)
+    param_dict["enemy_list"].draw(window)
+    param_dict["missile_list"].draw(window)
+    del param_dict["value_list"][:]
+    del param_dict["range_list"][:]
+    param_dict["dictionary"].clear()
     pygame.display.update()
     clock.tick(60)
     return (round_stats, Delta, i)
@@ -790,7 +799,7 @@ def read(field, file, jumpLines, player, window, database):
 
 
 # Function Draw_2 is the game loop that does mostly the same things as the main()-function in the "Main.py"-file. We use this function when the player has clicked on some tower on the field to some operations on it.
-def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, player, start, field, jumpLines, environment_list):
+def Draw_2(param_dict, window, pieces_list, round_stats, Delta, i, tower_A, player, start, field, jumpLines, environment_list):
     clock = pygame.time.Clock()
     m = 0 # Variable m is a counter that control, when we can exit this function.
     while True:
@@ -801,7 +810,7 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
-            if param_list[15].has(tower_A):
+            if param_dict["tower_list"].has(tower_A):
                 # The player clicks on the "update range"-button in order to increase the range of the tower.
                 if event.type == pygame.MOUSEBUTTONDOWN and xpos > 1180 and xpos < 1340 and ypos > 310 and ypos < 455:
                     if player.Money >= 100 and tower_A.range_state < 1: # Check that the player can afford to buy the update and that the update has not been bought earlier.
@@ -871,56 +880,56 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
                         break
                 
         if float(time.monotonic()) - Delta > 0.5 and i < len(round_stats) and i != -1:
-            param_list[17].add(round_stats[i])
+            param_dict["enemy_list"].add(round_stats[i])
             Delta = float(time.monotonic())
             if (len(round_stats) - i == 1):
                 del round_stats[:]
                 i = -1
             else:
                 i = i + 1
-        Draw_static(window, param_list, pieces_list, player, environment_list)
+        Draw_static(window, param_dict, pieces_list, player, environment_list)
         
-        if param_list[15].has(tower_A):
+        if param_dict["tower_list"].has(tower_A):
             # If the range of a chosen tower has already been updated, paint the corresponding "block" as blue.
             if tower_A.range_state == 1:
                 pygame.draw.rect(window, BLUE, (1180,310,160,145), 0)
-                window.blit(param_list[9], (1185, 370)) # Write the name of the update to the screen.
-                window.blit(param_list[10], (1240, 390)) # Write the price of the update to the screen.
+                window.blit(param_dict["update_range_text"], (1185, 370)) # Write the name of the update to the screen.
+                window.blit(param_dict["update_range_price"], (1240, 390)) # Write the price of the update to the screen.
             # If the fire rate of a chosen tower has already been updated, paint the corresponding block as blue.
             if tower_A.rate_state == 1:
                 pygame.draw.rect(window, BLUE, (1340,310,160,145), 0)
-                window.blit(param_list[11], (1350, 370))
-                window.blit(param_list[12], (1400, 390))
+                window.blit(param_dict["update_rate_text"], (1350, 370))
+                window.blit(param_dict["update_rate_price"], (1400, 390))
             # If the damage of the chosen tower has already been updated, paint the corresponding block as blue.
             if tower_A.damage_state == 1:
                 pygame.draw.rect(window, BLUE, (1180,455,160,145), 0)
-                window.blit(param_list[13], (1190, 500))
-                window.blit(param_list[14], (1240, 520))
+                window.blit(param_dict["update_damage_text"], (1190, 500))
+                window.blit(param_dict["update_damage_price"], (1240, 520))
             # If poison-property has already been bought for the tower, paint the corresponding block as blue.
             if tower_A.poison_state == 1:
                 pygame.draw.rect(window, BLUE, (1340,455,160,145), 0)
-                window.blit(param_list[42], (1370, 500))
-                window.blit(param_list[43], (1395, 520))
+                window.blit(param_dict["poison_text"], (1370, 500))
+                window.blit(param_dict["poison_price"], (1395, 520))
         # Draw the lines around the "updateblocks" again because otherwise the blue color would cover them.
         pygame.draw.line(window, BLACK, (1180, 310), (1500, 310), 3)
         pygame.draw.line(window, BLACK, (1180, 455), (1500, 455), 3)
         pygame.draw.line(window, BLACK, (1180, 600), (1500, 600), 3)
         pygame.draw.line(window, BLACK, (1340, 310), (1340, 600), 3)
-        for enemy in param_list[17]:
+        for enemy in param_dict["enemy_list"]:
             if enemy.direction == "up" or enemy.direction == "down":
-                window.blit((param_list[51].render(str(enemy.health), True, BLACK)), (enemy.rect.centerx + 16, enemy.rect.centery - 7))
+                window.blit((param_dict["font"].render(str(enemy.health), True, BLACK)), (enemy.rect.centerx + 16, enemy.rect.centery - 7))
             elif enemy.direction == "left" or enemy.direction == "right":
-                window.blit((param_list[51].render(str(enemy.health), True, BLACK)), (enemy.rect.x, enemy.rect.centery - 28))
+                window.blit((param_dict["font"].render(str(enemy.health), True, BLACK)), (enemy.rect.x, enemy.rect.centery - 28))
         
-        if param_list[15].has(tower_A):
+        if param_dict["tower_list"].has(tower_A):
             pygame.draw.circle(window, BLUE, (tower_A.rect.centerx, tower_A.rect.centery), tower_A.range, 1)
         else:
             pygame.draw.circle(window, BLUE, (tower_A.rect.centerx, tower_A.rect.centery), 100, 1)
-        param_list[15].draw(window)
-        param_list[50].draw(window)
-        param_list[59].draw(window)
-        for tower in param_list[50]:
-            for enemy in param_list[17]:
+        param_dict["tower_list"].draw(window)
+        param_dict["contact_bomb_list"].draw(window)
+        param_dict["range_bomb_list"].draw(window)
+        for tower in param_dict["contact_bomb_list"]:
+            for enemy in param_dict["enemy_list"]:
                 if enemy.health <= 0:
                     enemy.kill()
                     player.Money += enemy.price
@@ -929,8 +938,8 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
                     tower.kill()
                     m = 1
             
-        for tower in param_list[59]:
-            for enemy in param_list[17]:
+        for tower in param_dict["range_bomb_list"]:
+            for enemy in param_dict["enemy_list"]:
                 enemy.dist = sqrt((enemy.rect.centerx - tower.rect.centerx)**2 + (enemy.rect.centery - tower.rect.centery)**2)
                 if enemy.health <= 0:
                     enemy.kill()
@@ -952,16 +961,16 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
             if tower.number == 0:
                 del tower.elist[:]
         
-        for bullet in param_list[64]:
+        for bullet in param_dict["missile_list"]:
             bullet.target = [bullet.target_enemy.rect.centerx, bullet.target_enemy.rect.centery]           
         
-        for tower in param_list[15]:
+        for tower in param_dict["tower_list"]:
             if tower.PipeUp == 0:
                 tower.x0 = tower.rect.centerx
                 tower.y0 = tower.rect.centery - 12
                 tower.PipeUp = 1
             pygame.draw.line(window, BLACK, (tower.rect.centerx, tower.rect.centery), (tower.x0, tower.y0), 1)
-            for enemy in param_list[17]:
+            for enemy in param_dict["enemy_list"]:
                 if enemy.health <= 0:
                     enemy.kill()
                     player.Money += enemy.price
@@ -972,10 +981,10 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
                         game_over(window)
                 enemy.dist = sqrt((enemy.rect.centerx - tower.rect.centerx)**2 + (enemy.rect.centery - tower.rect.centery)**2)
                 if enemy.dist <= tower.range:
-                    param_list[29].append(enemy)
-                    param_list[31][enemy.value] = enemy
-                    param_list[30].append(enemy.value)
-                for bullet in param_list[16]:
+                    param_dict["range_list"].append(enemy)
+                    param_dict["dictionary"][enemy.value] = enemy
+                    param_dict["value_list"].append(enemy.value)
+                for bullet in param_dict["bullet_list"]:
                     if pygame.sprite.collide_rect(bullet, enemy):
                         if bullet.type_2 != enemy.resistant:
                             enemy.health -= bullet.damage
@@ -989,7 +998,7 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
                                     enemy.resistant = 5
                                 enemy.image = black_monster
                         bullet.kill()
-                for bullet in param_list[64]:
+                for bullet in param_dict["missile_list"]:
                     if pygame.sprite.collide_rect(bullet, enemy):
                         if bullet.type_2 != enemy.resistant:
                             enemy.health -= bullet.damage
@@ -998,27 +1007,27 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
                                 enemy.poisonTime = time.monotonic()
                         bullet.kill()
                         
-            param_list[30].sort()
-            param_list[30].reverse()
-            if float(time.monotonic()) - float(tower.beginning) >= tower.interval and (param_list[30]):
-                target = [param_list[31][param_list[30][0]].rect.centerx, param_list[31][param_list[30][0]].rect.centery]
+            param_dict["value_list"].sort()
+            param_dict["value_list"].reverse()
+            if float(time.monotonic()) - float(tower.beginning) >= tower.interval and (param_dict["value_list"]):
+                target = [param_dict["dictionary"][param_dict["value_list"][0]].rect.centerx, param_dict["dictionary"][param_dict["value_list"][0]].rect.centery]
                 startpoint = [tower.rect.centerx, tower.rect.centery]
-                tower.x0 = startpoint[0] + 12*(target[0]-startpoint[0]) / param_list[31][param_list[30][0]].dist
-                tower.y0 = startpoint[1] + 12*(target[1]-startpoint[1]) / param_list[31][param_list[30][0]].dist
+                tower.x0 = startpoint[0] + 12*(target[0]-startpoint[0]) / param_dict["dictionary"][param_dict["value_list"][0]].dist
+                tower.y0 = startpoint[1] + 12*(target[1]-startpoint[1]) / param_dict["dictionary"][param_dict["value_list"][0]].dist
                 pygame.draw.line(window, BLACK, (startpoint[0], startpoint[1]), (round(tower.x0), round(tower.y0)), 1)
                 damage = tower.damage
                 poison = tower.poison
                 Type = tower.type
                 Type_2 = tower.type_2
-                bullet = Bullet(target, startpoint, damage, poison, Type, Type_2, param_list[31][param_list[30][0]])
+                bullet = Bullet(target, startpoint, damage, poison, Type, Type_2, param_dict["dictionary"][param_dict["value_list"][0]])
                 if tower.homing == 0:
-                    param_list[16].add(bullet)
+                    param_dict["bullet_list"].add(bullet)
                 elif tower.homing == 1:
-                    param_list[64].add(bullet)
+                    param_dict["missile_list"].add(bullet)
                 tower.beginning = time.monotonic()
-            del param_list[30][:]
-            del param_list[29][:]
-            param_list[31].clear()
+            del param_dict["value_list"][:]
+            del param_dict["range_list"][:]
+            param_dict["dictionary"].clear()
         
         if jumpLines == 0 and field.number == 1:
             window.blit(start, (5, 315))
@@ -1028,15 +1037,15 @@ def Draw_2(param_list, window, pieces_list, round_stats, Delta, i, tower_A, play
             window.blit(start, (570, 670))
         elif jumpLines == 0 and field.number == 4:
             window.blit(start, (620, 670))        
-        param_list[16].update()
-        param_list[17].update()
-        param_list[64].update()
-        param_list[16].draw(window)
-        param_list[17].draw(window)
-        param_list[64].draw(window)
-        del param_list[30][:]
-        del param_list[29][:]
-        param_list[31].clear()
+        param_dict["bullet_list"].update()
+        param_dict["enemy_list"].update()
+        param_dict["missile_list"].update()
+        param_dict["bullet_list"].draw(window)
+        param_dict["enemy_list"].draw(window)
+        param_dict["missile_list"].draw(window)
+        del param_dict["value_list"][:]
+        del param_dict["range_list"][:]
+        param_dict["dictionary"].clear()
         pygame.display.update()
         clock.tick(60)
         if m != 0:
