@@ -461,12 +461,11 @@ def Initialize():
                   "pistol": pistol, "shotgun_small": shotgun_small, "machine_gun_small": machine_gun_small, "pistol_small": pistol_small,
                   "assistant_small": assistant_small, "money_text": money_text, "round_text": round_text, "lives_text": lives_text,
                   "range_list": range_list, "value_list": value_list, "dictionary": dictionary, "Info_text": Info_text, "exit_text": exit_text,
-                  "info_font": info_font, "welcome_font": welcome_font, "welcome_1": welcome_1, "welcome_2": welcome_2, "map_1": map_1,
-                  "map_2": map_2, "map_3": map_3, "map_4": map_4, "poison_text": poison_text, "poison_price": poison_price, "Update_font": Update_font,
-                  "instructions_text": instructions_text, "mine": mine, "mine_small": mine_small, "mine_text": mine_text, "mine_price": mine_price,
-                  "contact_bomb_list": contact_bomb_list, "font": font, "tree": tree, "lake": lake, "tree_2": tree_2, "smart_bomb": smart_bomb,
-                  "smart_bomb_small": smart_bomb_small, "smart_bomb_text": smart_bomb_text, "smart_bomb_price": smart_bomb_price,
-                  "range_bomb_list": range_bomb_list, "homing_missile": homing_missile, "homing_missile_small": homing_missile_small,
+                  "welcome_1": welcome_1, "welcome_2": welcome_2, "map_1": map_1, "map_2": map_2, "map_3": map_3, "map_4": map_4, "poison_text": poison_text,
+                  "poison_price": poison_price, "Update_font": Update_font, "instructions_text": instructions_text, "mine": mine, "mine_small": mine_small,
+                  "mine_text": mine_text, "mine_price": mine_price, "contact_bomb_list": contact_bomb_list, "font": font, "tree": tree, "lake": lake,
+                  "tree_2": tree_2, "smart_bomb": smart_bomb, "smart_bomb_small": smart_bomb_small, "smart_bomb_text": smart_bomb_text,
+                  "smart_bomb_price": smart_bomb_price, "range_bomb_list": range_bomb_list, "homing_missile": homing_missile, "homing_missile_small": homing_missile_small,
                   "homing_missile_text": homing_missile_text, "homing_missile_price": homing_missile_price, "missile_list": missile_list}
     return param_dict
  
