@@ -1,17 +1,17 @@
 import pygame
 from pygame.locals import *
 
-class Tower(pygame.sprite.Sprite): # Define a class Tower.
+class Tower(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         
-    def update(self): # This methode is used when the player moves a tower around the field and is about to set the tower somewhere on the field.
+    def update(self):
         pos = pygame.mouse.get_pos()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
     
 
-class Machine_gun_tower(Tower): # A class "Machine_gun_tower" that is a subclass of the class "Tower".
+class Machine_gun_tower(Tower):
     def __init__(self, picture, beginning):
         super().__init__()
         self.image = picture # Picture is the image that represents a tower when it has been set to the game field.
