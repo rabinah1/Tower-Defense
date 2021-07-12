@@ -1,5 +1,5 @@
 import pygame
-from pygame.locals import *
+
 
 class Environment(pygame.sprite.Sprite):
     def __init__(self, picture, x, y):

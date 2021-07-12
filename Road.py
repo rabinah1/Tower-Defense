@@ -1,7 +1,7 @@
 import pygame
-from pygame.locals import *
+from common import BROWN
 
-BROWN = (139, 69, 19)
+
 class Piece(pygame.sprite.Sprite):
     def __init__(self, x, y, xsize, ysize):
         super().__init__()

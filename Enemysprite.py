@@ -1,23 +1,12 @@
 import pygame
-from pygame.locals import *
-from Map import *
 import random
 import time
+from common import (red_monster, blue_monster, black_monster,
+                    yellow_monster, gray_monster)
 
-BLACK = (0,0,0)
-RED = (255,0,0)
-BLUE = (0,0,255)
-YELLOW = (255,255,0)
-GRAY = (128,128,128)
-
-red_monster = pygame.image.load("red_monster.jpg")
-blue_monster = pygame.image.load("blue_monster.jpg")
-black_monster = pygame.image.load("black_monster.jpg")
-yellow_monster = pygame.image.load("yellow_monster.jpg")
-gray_monster = pygame.image.load("gray_monster.jpg")
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, health, speed, price, color, resistant, points):
+    def __init__(self, health, speed, price, color, immunity, points):
         super().__init__()
         self.color = color
         if (self.color == "black"):
@@ -37,123 +26,125 @@ class Enemy(pygame.sprite.Sprite):
             import Main
             Main.main()
         self.health = health
-        self.value = 0 # Tells how long distance the enemy has travelled in the field.
-        self.points = points  # A dictionary that contains the points in which the direction
-                              # of the enemies should change and the directions to which the movement will change.
+        self.travelled = 0  # Tells how long distance the enemy has travelled in the field.
+        # A dictionary that contains the points in which the direction of the enemies should
+        # change and the directions to which the movement will change.
+        self.points = points
         self.direction = "none"
         self.speed = speed
-        self.n = 0 # A counter that ensures that an enemy chooses its direction
-                   # only in an intersection and after it, the direction is kept constant.
-        self.decideDirection = 0 # A variable that gets either value 0 or 1.
-                                 # This decides the direction of the enemy after an intersection.
-        self.poisonTime = 0 # How quickly poison affects the enemy.
+        # select_direction ensures that an enemy chooses its direction only in an intersection
+        # and after it, the direction is kept constant.
+        self.select_direction = False
+        self.get_direction = 0
+        self.poison_time = 0  # How quickly poison affects the enemy.
         self.poison = 0
-        self.price = price # The amount of money the player gets when the enemy is destroyed
-        self.dist = 0 # The distnace of an enemy from a smart bomb
-        if (resistant == "none"):
-            self.resistant = 5
-        elif (resistant == "red"):
-            self.resistant = 1
-        elif (resistant == "blue"):
-            self.resistant = 2
-        elif (resistant == "yellow"):
-            self.resistant = 3
-        elif (resistant == "gray"):
-            self.resistant = 4
-        
+        self.price = price  # The amount of money the player gets when the enemy is destroyed
+        self.dist = 0  # The distnace of an enemy from a smart bomb
+        if (immunity == "none"):
+            self.immunity = 5
+        elif (immunity == "red"):
+            self.immunity = 1
+        elif (immunity == "blue"):
+            self.immunity = 2
+        elif (immunity == "yellow"):
+            self.immunity = 3
+        elif (immunity == "gray"):
+            self.immunity = 4
+
     def get_location(self):
         x = self.rect.centerx
         y = self.rect.centery
         coordinates = (x, y)
         return coordinates
-    
+
     def update(self):
-        if self.poison == 1 and float(time.monotonic()) - float(self.poisonTime) > 3.0:
-            self.poisonTime = time.monotonic()
+        if self.poison == 1 and float(time.monotonic()) - float(self.poison_time) > 3.0:
+            self.poison_time = time.monotonic()
             self.health -= 5
-            
-        if self.get_location() in self.points: # Coordinates of an enemy are the same as the coordinates of some intersection
-            self.n = 0
+
+        # Coordinates of an enemy are the same as the coordinates of some intersection
+        if self.get_location() in self.points:
+            self.select_direction = True
             self.direction = self.points[self.get_location()]
-            
+
         if self.direction == "right":
             self.rect.centerx += self.speed
-            
+
         elif self.direction == "left":
             self.rect.centerx -= self.speed
-            
+
         elif self.direction == "up":
             self.rect.centery -= self.speed
-            
+
         elif self.direction == "down":
             self.rect.centery += self.speed
-            
-        elif self.direction == "A": # If the dictionary returns a value "A",
-                                    # choose randomly an integer from range [0,1] and depending on the result,
-                                    # move the enemy to either up or right.
-            if self.n == 0:
-                self.decideDirection = random.randint(0,1)
-                self.n = 1
-            if self.decideDirection == 0:
+
+        # If the dictionary returns a value "A", choose randomly an integer from range
+        # [0,1] and depending on the result, move the enemy to either up or right.
+        elif self.direction == "A":
+            if self.select_direction:
+                self.get_direction = random.randint(0, 1)
+                self.select_direction = False
+            if self.get_direction == 0:
                 self.rect.centery -= self.speed
                 self.direction = "up"
-            elif self.decideDirection == 1:
+            elif self.get_direction == 1:
                 self.rect.centerx += self.speed
                 self.direction = "right"
-                
+
         elif self.direction == "B":
-            if self.n == 0:
-                self.decideDirection = random.randint(0,1)
-                self.n = 1
-            if self.decideDirection == 0:
+            if self.select_direction:
+                self.get_direction = random.randint(0, 1)
+                self.select_direction = False
+            if self.get_direction == 0:
                 self.rect.centery -= self.speed
                 self.direction = "up"
-            elif self.decideDirection == 1:
+            elif self.get_direction == 1:
                 self.rect.centerx -= self.speed
                 self.direction = "left"
-                
+
         elif self.direction == "C":
-            if self.n == 0:
-                self.decideDirection = random.randint(0,1)
-                self.n = 1
-            if self.decideDirection == 0:
+            if self.select_direction:
+                self.get_direction = random.randint(0, 1)
+                self.select_direction = False
+            if self.get_direction == 0:
                 self.rect.centery -= self.speed
                 self.direction = "up"
-            elif self.decideDirection == 1:
-                self.rect.centery += self.speed
-                self.direction = "down"
-                
-        elif self.direction == "D":
-            if self.n == 0:
-                self.decideDirection = random.randint(0,1)
-                self.n = 1
-            if self.decideDirection == 0:
-                self.rect.centerx += self.speed
-                self.direction = "right"
-            elif self.decideDirection == 1:
-                self.rect.centerx -= self.speed
-                self.direction = "left"
-                
-        elif self.direction == "E":
-            if self.n == 0:
-                self.decideDirection = random.randint(0,1)
-                self.n = 1
-            if self.decideDirection == 0:
-                self.rect.centerx += self.speed
-                self.direction = "right"
-            elif self.decideDirection == 1:
-                self.rect.centery += self.speed
-                self.direction = "down"
-                
-        elif self.direction == "F":
-            if self.n == 0:
-                self.decideDirection = random.randint(0,1)
-                self.n = 1
-            if self.decideDirection == 0:
-                self.rect.centerx -= self.speed
-                self.direction = "left"
-            elif self.decideDirection == 1:
+            elif self.get_direction == 1:
                 self.rect.centery += self.speed
                 self.direction = "down"
 
-        self.value += self.speed
+        elif self.direction == "D":
+            if self.select_direction:
+                self.get_direction = random.randint(0, 1)
+                self.select_direction = False
+            if self.get_direction == 0:
+                self.rect.centerx += self.speed
+                self.direction = "right"
+            elif self.get_direction == 1:
+                self.rect.centerx -= self.speed
+                self.direction = "left"
+
+        elif self.direction == "E":
+            if self.select_direction:
+                self.get_direction = random.randint(0, 1)
+                self.select_direction = False
+            if self.get_direction == 0:
+                self.rect.centerx += self.speed
+                self.direction = "right"
+            elif self.get_direction == 1:
+                self.rect.centery += self.speed
+                self.direction = "down"
+
+        elif self.direction == "F":
+            if self.select_direction:
+                self.get_direction = random.randint(0, 1)
+                self.select_direction = False
+            if self.get_direction == 0:
+                self.rect.centerx -= self.speed
+                self.direction = "left"
+            elif self.get_direction == 1:
+                self.rect.centery += self.speed
+                self.direction = "down"
+
+        self.travelled += self.speed

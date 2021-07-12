@@ -39,12 +39,12 @@ while i <= 10:
             color = "yellow"
         elif color == "g":
             color = "gray"
-            
+
         if speed == 1:
             speed = "slow"
         elif speed == 2:
             speed = "fast"
-            
+
         if resistant == 1:
             resistant = "red"
         elif resistant == 2:
@@ -55,8 +55,9 @@ while i <= 10:
             resistant = "gray"
         elif resistant == 5:
             resistant = "none"
-            
-        text = "('" + str(health) + "','" + str(price) + "','" + color + "','" + str(speed) + "','" + resistant + "','" + str(i) + "'),\n"
+
+        text = ("('" + str(health) + "','" + str(price) + "','" + color + "','" + str(speed) +
+                "','" + resistant + "','" + str(i) + "'),\n")
         sqlfile.write(text)
         if c == "%":
             c = mapfile.read(1)
